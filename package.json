@@ -1,6 +1,6 @@
 {
   "name": "postcss-to-rtl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "PostCSS plugin to convert CSS to RTL",
   "keywords": [
     "postcss",
@@ -11,8 +11,8 @@
     "convert"
   ],
   "authors": [
-      "Jakob Werner <jawerne@microsoft.com>",
-      "Ciprian Ceteras <cipix@sectorlabs.ro>"
+    "Jakob Werner <jawerne@microsoft.com>",
+    "Ciprian Ceteras <cipix@sectorlabs.ro>"
   ],
   "license": "MIT",
   "repository": "SectorLabs/postcss-to-rtl",
