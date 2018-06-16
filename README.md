@@ -15,7 +15,7 @@ To get even smaller files, use [css-byebye] to further strip the rules with the 
 [postcss-inline-rtl]: https://github.com/jakob101/postcss-inline-rtl
 [css-byebye]: https://github.com/AoDev/css-byebye
 
-## Recomandation
+## Recommendation
 Always have a `dir="ltr"` or `dir="rtl"` in your HTML tag.
 
 ## Examples
@@ -49,6 +49,6 @@ postcss([ require('postcss-to-rtl') ])
 ```
 
 ## Cred
-+1 for [postcss-inline-rtl]( as this wouldn't exist without it!
++1 for [rtlcss](https://github.com/MohammadYounes/rtlcss), [postcss-inline-rtl] as this wouldn't exist without these!
 
 See [PostCSS] docs for examples for your environment.
