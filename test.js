@@ -27,15 +27,12 @@ test('Supports rtlcss control directives', t => {
 
 test('Checks basic example', t => {
     const input = `
-a { 
-    float: left 
+a {
+    float: left
 }`;
 
     const output = `
-html[dir="ltr"] a { 
-    float: left
-}
-html[dir="rtl"] a { 
+a {
     float: right
 }`;
     return postcss([plugin()]).process(input)
@@ -46,19 +43,15 @@ html[dir="rtl"] a {
 
 test('Checks example with two properties which should both be converted', t => {
     const input = `
-a { 
+a {
     float: left;
     transform: translateX(50%);
 }`;
 
     const output = `
-html[dir="ltr"] a { 
-    float: left;
-    transform: translateX(50%)
-}
-html[dir="rtl"] a { 
+a {
     float: right;
-    transform: translateX(-50%)
+    transform: translateX(-50%);
 }`;
     return postcss([plugin()]).process(input)
         .then( result => {
@@ -76,11 +69,6 @@ a {
     const output = `
 a {
     color: red;
-}
-html[dir="ltr"] a {
-    transform: translateX(50%);
-}
-html[dir="rtl"] a {
     transform: translateX(-50%);
 }`;
     return postcss([plugin()]).process(input)
@@ -99,14 +87,8 @@ a {
 
     const output = `
 a {
-    color: red;
-}
-html[dir="ltr"] a {
-    transform: translateX(50%);
-    border-left: 10px;
-}
-html[dir="rtl"] a {
     transform: translateX(-50%);
+    color: red;
     border-right: 10px;
 }`;
     return postcss([plugin()]).process(input)
@@ -126,13 +108,8 @@ a {
     const output = `
 a {
     composes: foo;
-    color: red;
-}
-html[dir="ltr"] a {
-    transform: translateX(50%);
-}
-html[dir="rtl"] a {
     transform: translateX(-50%);
+    color: red;
 }`;
     return postcss([plugin()]).process(input)
         .then( result => {
@@ -151,13 +128,8 @@ test('Checks example with multiple selectors', t => {
     const output = `
 .a, .b {
     composes: foo;
-    color: red;
-}
-html[dir="ltr"] .a, html[dir="ltr"] .b {
-    transform: translateX(50%);
-}
-html[dir="rtl"] .a, html[dir="rtl"] .b {
     transform: translateX(-50%);
+    color: red;
 }`;
     return postcss([plugin()]).process(input)
         .then( result => {
@@ -175,6 +147,27 @@ html[dir="ltr"] .a {
 
     const output = `
 html[dir="ltr"] .a {
+    composes: foo;
+    transform: translateX(50%);
+    color: red;
+}`;
+
+    return postcss([plugin()]).process(input)
+        .then( result => {
+            t.is(result.css, output);
+        });
+});
+
+test('Checks example where selectors already have styles defined for both directions html[dir]', t => {
+    const input = `
+html[dir] .a {
+    composes: foo;
+    transform: translateX(50%);
+    color: red;
+}`;
+
+    const output = `
+html[dir] .a {
     composes: foo;
     transform: translateX(50%);
     color: red;
@@ -238,11 +231,8 @@ test('Check @media tag parsing', t => {
 
     const output = `
 @media screen and (max-width:632px) {
-    html[dir="ltr"] .a {
-        float: left
-    }
-    html[dir="rtl"] .a {
-        float: right
+    .a {
+        float: right;
     }
 }`;
 

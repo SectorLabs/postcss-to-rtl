@@ -1,8 +1,7 @@
 var postcss = require('postcss');
 var rtlcss = require('rtlcss');
-var propsToAlwaysConvert = require('./propsToAlwaysConvert.js');
 
-module.exports = postcss.plugin('postcss-inline-rtl', function (opts) {
+module.exports = postcss.plugin('postcss-to-rtl', function (opts) {
     opts = opts || {};
 
     // Check if there is an ignore parameter (full selectors to ignore)
@@ -10,8 +9,6 @@ module.exports = postcss.plugin('postcss-inline-rtl', function (opts) {
     if (!ignoreRegex || ignoreRegex.constructor !== RegExp) {
         ignoreRegex = null;
     }
-
-    var propsToAlwaysConvertRegex = new RegExp(propsToAlwaysConvert, 'i');
 
     return function (css) {
 
@@ -82,10 +79,6 @@ module.exports = postcss.plugin('postcss-inline-rtl', function (opts) {
             var rtl = postcss([rtlcss]).process(rule).root;
 
             // Go through declarations
-            var declarationKeeperLTR = [];
-            var declarationKeeperRTL = [];
-            var declarationKeeperInvariant = [];
-
             for (var declIndex = rule.nodes.length - 1;
                  declIndex >= 0; --declIndex) {
                 if (rule.nodes[declIndex].type !== 'decl') {
@@ -100,64 +93,10 @@ module.exports = postcss.plugin('postcss-inline-rtl', function (opts) {
                 var rtlValue = rtlDecl.raws.value && rtlDecl.raws.value.raw ?
                     rtlDecl.raws.value.raw : rtlDecl.value;
 
-                if (rtlDecl.prop !== decl.prop ||
-                    rtlValue !== decl.value) {
-
-                    declarationKeeperLTR.push(decl);
-                    declarationKeeperRTL.push(rtlDecl);
-                    decl.remove();
-                    rtlDecl.remove();
-                } else if (propsToAlwaysConvertRegex.test(decl.prop)) {
-                    declarationKeeperInvariant.push(decl);
-                    decl.remove();
-                    rtlDecl.remove();
+                if (rtlDecl.prop !== decl.prop || rtlValue !== decl.value) {
+                    decl.value = rtlValue;
+                    decl.prop = rtlDecl.prop;
                 }
-            }
-
-            // Check for transformed properties
-            if (declarationKeeperLTR.length > 0) {
-
-                var ltrSelectors = rule.selectors.map(function (el) {
-                    if (el.indexOf('html') !== 0) {
-                        return 'html[dir="ltr"] ' + el;
-                    }
-
-                    return el;
-                });
-
-                var rtlSelectors = rule.selectors.map(function (el) {
-                    if (el.indexOf('html') !== 0) {
-                        return 'html[dir="rtl"] ' + el;
-                    }
-
-                    return el;
-                });
-
-                // Create RTL rule
-                var newRTLRule = postcss.rule({ selectors: rtlSelectors });
-                newRTLRule.append(declarationKeeperRTL.reverse());
-                rule.parent.insertAfter(rule, newRTLRule);
-
-                // create LTR rule
-                var newLTRRule = postcss.rule({ selectors: ltrSelectors });
-                newLTRRule.append(declarationKeeperLTR.reverse());
-                rule.parent.insertAfter(rule, newLTRRule);
-            }
-
-            // Check for invariant properties
-            if (declarationKeeperInvariant.length > 0) {
-                var invariantSelectors = rule.selectors.map(function (el) {
-                    if (el.indexOf('html') !== 0) {
-                        return 'html[dir] ' + el;
-                    }
-
-                    return el;
-                });
-
-                var newInvariantRule =
-                    postcss.rule({ selectors: invariantSelectors });
-                newInvariantRule.append(declarationKeeperInvariant.reverse());
-                rule.parent.insertAfter(rule, newInvariantRule);
             }
 
             // If we're left with an empty rule (with no declarations)

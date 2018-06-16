@@ -1,22 +1,25 @@
 {
-  "name": "postcss-inline-rtl",
-  "version": "0.9.8",
-  "description": "PostCSS plugin to inline the minimal amount of RTL CSS you need",
+  "name": "postcss-to-rtl",
+  "version": "0.1.0",
+  "description": "PostCSS plugin to convert CSS to RTL",
   "keywords": [
     "postcss",
     "css",
     "postcss-plugin",
     "rtl",
     "rtlcss",
-    "inline"
+    "convert"
   ],
-  "author": "Jakob Werner <jawerne@microsoft.com>",
+  "authors": [
+      "Jakob Werner <jawerne@microsoft.com>",
+      "Ciprian Ceteras <cipix@sectorlabs.ro>"
+  ],
   "license": "MIT",
-  "repository": "jakob101/postcss-inline-rtl",
+  "repository": "SectorLabs/postcss-to-rtl",
   "bugs": {
-    "url": "https://github.com/jakob101/postcss-inline-rtl/issues"
+    "url": "https://github.com/SectorLabs/postcss-to-rtl/issues"
   },
-  "homepage": "https://github.com/jakob101/postcss-inline-rtl",
+  "homepage": "https://github.com/SectorLabs/postcss-to-rtl",
   "dependencies": {
     "postcss": "^6.0.1",
     "rtlcss": "^2.0.3"

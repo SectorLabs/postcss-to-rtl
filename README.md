@@ -1,12 +1,21 @@
-# PostCSS Inline Rtl [![Build Status][ci-img]][ci]
+# PostCSS to Rtl [![Build Status][ci-img]][ci]
 
-[PostCSS] plugin to inline the minimal amount of RTL CSS you need.
+[PostCSS] plugin to convert (left to right) CSS to RTL.
+
+Enables projects that serve their CSS inlined in a style tag in the documents to build smaller, separate RTL and LTR CSS files for the LTR and RTL pages.
+
+Use this instead of [postcss-inline-rtl] or other postcss pluging that produce
+a big CSS files containing rules for both directions.
+
+To get even smaller files, use [css-byebye] to further strip the rules with the wrong direction from the resulting CSS.
 
 [PostCSS]: https://github.com/postcss/postcss
 [ci-img]:  https://travis-ci.org/jakob101/postcss-inline-rtl.svg
 [ci]:      https://travis-ci.org/jakob101/postcss-inline-rtl
+[postcss-inline-rtl]: https://github.com/jakob101/postcss-inline-rtl
+[css-byebye]: https://github.com/AoDev/css-byebye
 
-## Requirement
+## Recomandation
 Always have a `dir="ltr"` or `dir="rtl"` in your HTML tag.
 
 ## Examples
@@ -15,7 +24,7 @@ Always have a `dir="ltr"` or `dir="rtl"` in your HTML tag.
 /*  Normal code */
 .class {
   color: red;
-} 
+}
 
 /*  => no change */
 ```
@@ -27,73 +36,19 @@ Always have a `dir="ltr"` or `dir="rtl"` in your HTML tag.
 }
 
 /*  Converts to: */
-html[dir='ltr'] .class {
-  border-left: 10px
-}
-html[dir='rtl'] .class {
+.class {
   border-right: 10px
-}
-.class {
   color: red;
-}
-```
-
-```css
-.class {
-  margin-left: 10px;
-}
-
-/*  converts to: */
-html[dir='ltr'] .class {
-  margin-left: 10px
-}
-html[dir='rtl'] .class {
-  margin-right: 10px
-}
-```
-
-```css
-/*  Edge case (cancelling LTR/RTL values) */
-.class {
-  border-left: 10px;
-  border: none; /*  Notice this doesn't change LTR-RTL */
-}
-
-/*  converts to: */
-html[dir] .class {
-  border: none;
-}
-html[dir='ltr'] .class {
-  border-left: 10px;
-}
-html[dir='rtl'] .class {
-  border-right: 10px;
-}
-```
-
-```css
-/*  Edge case (RTL-invariant) + CSS modules */
-.class {
-  composes: otherClass;
-  border: none; /*  Notice this doesn't change LTR-RTL */
-}
-
-/*  Converts to: */
-.class {
-    composes: otherClass;
-}
-html[dir] .class {
-  border: none;
 }
 ```
 
 ## Usage
 
 ```js
-postcss([ require('postcss-inline-rtl') ])
+postcss([ require('postcss-to-rtl') ])
 ```
 
 ## Cred
-+1 for [rtlcss](https://github.com/MohammadYounes/rtlcss), as this wouldn't exist without it!
++1 for [postcss-inline-rtl]( as this wouldn't exist without it!
 
 See [PostCSS] docs for examples for your environment.
