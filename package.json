@@ -1,5 +1,5 @@
 {
-  "name": "postcss-to-rtl",
+  "name": "@sector-labs/postcss-to-rtl",
   "version": "0.1.1",
   "description": "PostCSS plugin to convert CSS to RTL",
   "keywords": [
